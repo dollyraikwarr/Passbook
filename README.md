@@ -6,9 +6,9 @@
 
 Passbook is a single root-based Vite frontend application for Stellar Testnet multi-sig club treasuries, Soroban inter-contract spending caps & member dispute flagging, real-time event streaming, and CI/CD automation.
 
-## Reviewer Note: Level 3 Orange Belt Architecture Alignment
+## Architecture Alignment
 
-Following the structure of our approved Level 3 projects on RiseIn (e.g. CareCredits):
+Passbook follows standard production architecture guidelines for RiseIn submissions:
 
 - Single root Vite SPA (`index.html` mount shell; all UI logic inside `/src`).
 - Multi-contract Soroban Rust system (`contracts/treasury`, `contracts/expense`, `contracts/dispute`).
