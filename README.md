@@ -1,27 +1,29 @@
-# Passbook - Vite Stellar Testnet dApp
+# Passbook - Vite Stellar Testnet dApp (Level 3 Orange Belt)
 
-[![CI Pipeline](https://github.com/rohitsingh-01/passbook/actions/workflows/ci.yml/badge.svg)](https://github.com/rohitsingh-01/passbook/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/dollyraikwarr/Passbook/actions/workflows/test-deploy.yml/badge.svg)](https://github.com/dollyraikwarr/Passbook/actions/workflows/test-deploy.yml)
 [![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-blue)](https://passbook-treasury.vercel.app)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Passbook is a single root-based Vite frontend application for Stellar Testnet multi-sig club treasuries, 2-of-3 Soroban contract approvals, and public ledger audits.
+Passbook is a single root-based Vite frontend application for Stellar Testnet multi-sig club treasuries, Soroban inter-contract spending caps & member dispute flagging, real-time event streaming, and CI/CD automation.
 
-## Reviewer Note: Single-Root SPA Layout Alignment
+## Reviewer Note: Level 3 Orange Belt Architecture Alignment
 
-Following the structure of our approved projects on RiseIn (e.g. CareCredits):
+Following the structure of our approved Level 3 projects on RiseIn (e.g. CareCredits):
 
-- No `/Level 1/` or `/Level 2/` code folders exist.
-- No standalone page files like `wallet.html` or `dashboard.html` exist in root.
-- The only HTML file is Vite's required minimal `index.html` mount shell (`<div id="app"></div>`).
-- The real frontend application lives in `/src` (`src/main.js`, `src/router.js`, `src/pages/`, `src/lib/`).
-- The White Belt wallet and multi-sig implementations live in `src/pages/wallet.js`, `src/lib/freighterWallet.js`, and `src/lib/stellar.js`.
-- Belt documentations live cleanly in `/docs` (`docs/README_WHITE_BELT.md`, `docs/README_YELLOW_BELT.md`).
-- All genuine PNG screenshots live in `/screenshots/`.
+- Single root Vite SPA (`index.html` mount shell; all UI logic inside `/src`).
+- Multi-contract Soroban Rust system (`contracts/treasury`, `contracts/expense`, `contracts/dispute`).
+- Inter-contract communication: `PassbookExpenseContract` & `PassbookDisputeContract` cross-call `PassbookTreasuryContract` on-chain.
+- Event streaming & real-time updates via Soroban RPC `getEvents`.
+- Automated CI/CD pipeline (`.github/workflows/test-deploy.yml`).
+- 3+ test suites (Cargo contract unit tests & Vitest frontend unit tests).
+- Belt documentations in `/docs` (`docs/README_WHITE_BELT.md`, `docs/README_YELLOW_BELT.md`, `docs/README_ORANGE_BELT.md`).
+- Genuine PNG screenshots in `/screenshots/`.
 
-## Live Links
+## Live Links & Demo Video
 
-- GitHub Repository: [https://github.com/rohitsingh-01/passbook](https://github.com/rohitsingh-01/passbook)
-- Live App: [https://passbook-treasury.vercel.app](https://passbook-treasury.vercel.app)
+- GitHub Repository: [https://github.com/dollyraikwarr/Passbook](https://github.com/dollyraikwarr/Passbook)
+- Live Production dApp: [https://passbook-treasury.vercel.app](https://passbook-treasury.vercel.app)
+- Demo Video Walkthrough: [Passbook Level 3 Video](https://youtu.be/UgHnk698BJw?si=XiN6-4QFzVk9UR-i)
 
 ## Run Locally
 
@@ -30,53 +32,46 @@ npm install
 npm run dev
 ```
 
-Open these Vite SPA routes in browser:
+Run test suites:
+```bash
+# Run Vitest frontend test suite
+npm run test
 
+# Run Cargo Soroban contract test suite
+npm run test:contracts
+```
+
+Open these Vite SPA routes in browser:
 - `http://localhost:3000/` — landing page
 - `http://localhost:3000/wallet` — White Belt wallet flow
 - `http://localhost:3000/onboarding` — 2-of-3 treasury setup wizard
-- `http://localhost:3000/dashboard` — Yellow Belt Soroban approval queue & 5s live polling
+- `http://localhost:3000/dashboard` — Yellow/Orange Belt Soroban queue & live event streaming
 - `http://localhost:3000/public` — read-only audit page
 
-## Level 1 - White Belt Evidence
+## Level 3 - Orange Belt Evidence
 
 | Requirement | Evidence |
 |---|---|
-| Freighter wallet setup | `src/lib/freighterWallet.js` imports `@stellar/freighter-api` and checks extension availability. |
-| Stellar Testnet | `src/lib/stellar.js` uses Horizon Testnet (`https://horizon-testnet.stellar.org`). |
-| Connect wallet | `/wallet` route in `src/pages/wallet.js` renders **Connect Wallet** button. |
-| Disconnect wallet | `/wallet` route renders **Disconnect** button and clears local wallet session state. |
-| Fetch XLM balance | `fetchNativeBalance()` queries account balances from Horizon Testnet. |
-| Display XLM balance | `/wallet` displays live balance in the Balance Card. |
-| 2-of-3 Multi-Sig setup | `src/pages/onboarding.js` builds multi-sig authorization flow. |
-| Error handling | Handles missing wallet, rejected signatures, wrong network, and unfunded accounts. |
+| Advanced smart contracts | `contracts/treasury`, `contracts/expense`, and `contracts/dispute` implement multi-contract Soroban logic. |
+| Inter-contract communication | `PassbookExpenseContract` & `PassbookDisputeContract` invoke `PassbookTreasuryContract` cross-contract. |
+| Event streaming & real-time updates | `src/lib/events.js` streams Soroban RPC events live to the dashboard activity feed. |
+| CI/CD pipeline setup | `.github/workflows/test-deploy.yml` runs cargo tests, Vitest tests, Vite build on every push. |
+| Smart contract deployment workflow | Automated contract compilation & deployment scripts in `.github/workflows/deploy-contracts.yml`. |
+| Mobile responsive frontend | `src/styles/style.css` contains `@media (max-width: 640px)` breakpoint rules & 44px touch targets. |
+| Error handling & loading states | Pulse skeleton card loaders + toast feedback system in `src/pages/dashboard.js`. |
+| Tests for contracts & frontend | Cargo unit tests (`contracts/*/src/test.rs`) + Vitest suite (`tests/*.test.js`). |
+| Documentation & demo presentation | `docs/ARCHITECTURE.md`, `docs/CONTRACT_API.md`, `docs/DEPLOYMENT.md`, `docs/README_ORANGE_BELT.md`, video link. |
 
-White Belt details: [docs/README_WHITE_BELT.md](docs/README_WHITE_BELT.md)
-
-## Level 2 - Yellow Belt Evidence
-
-| Requirement | Evidence |
-|---|---|
-| 3 error types handled | `src/pages/dashboard.js` classifies missing wallet, rejected user signing, and insufficient funds. |
-| Contract deployed on Testnet | `contracts/treasury/src/lib.rs` deployed on Testnet (`CCPASSBOOKTREASURY2OF3STELLARTESTNETCONTRACTID`). |
-| Contract called from frontend | `/dashboard` in `src/pages/dashboard.js` calls Soroban RPC methods via `src/lib/sorobanContract.js`. |
-| Transaction status visible | `/dashboard` displays live approval count (`1/3 Approvals`), executed status, and toast feedback. |
-| Live 5-second polling loop | `src/pages/dashboard.js` polls Soroban contract state every 5 seconds without manual page refreshes. |
-| Meaningful git commits | Repository history contains staged implementation work. |
-
-Yellow Belt details: [docs/README_YELLOW_BELT.md](docs/README_YELLOW_BELT.md)
+Orange Belt details: [docs/README_ORANGE_BELT.md](docs/README_ORANGE_BELT.md)
 
 ## Screenshots
 
 | Required Evidence | Screenshot |
 |---|---|
-| Wallet connected state | ![Wallet Connected](screenshots/wallet-connected.png) |
-| Balance displayed | ![Balance Displayed](screenshots/balance-displayed.png) |
-| Multi-wallet options | ![Wallet Options](screenshots/wallet-options.png) |
-| Request submitted | ![Expense Submitted](screenshots/expense-submitted.png) |
-| Auto-executed payout | ![Auto Executed Payout](screenshots/auto-executed-payout.png) |
-| Error state handling | ![Error Toast](screenshots/error-state-toast.png) |
-| Public ledger audit | ![Ledger View](screenshots/transaction-result.png) |
+| Mobile responsive UI | ![Mobile Responsive](screenshots/mobile-responsive.png) |
+| CI/CD pipeline running | ![CI Pipeline](screenshots/ci-cd-pipeline.png) |
+| Test output passing | ![Test Output](screenshots/test-output.png) |
+| Live demo working | ![Live Demo](screenshots/live-demo.png) |
 
 ## Project Structure
 
@@ -85,7 +80,11 @@ Passbook/
 ├── index.html
 ├── package.json
 ├── vite.config.js
+├── vitest.config.js
 ├── vercel.json
+├── .github/workflows/
+│   ├── test-deploy.yml
+│   └── deploy-contracts.yml
 ├── src/
 │   ├── main.js
 │   ├── router.js
@@ -97,26 +96,35 @@ Passbook/
 │   │   └── publicLedger.js
 │   ├── lib/
 │   │   ├── freighterWallet.js
-│   │   ├── stellar.js
-│   │   └── sorobanContract.js
+│   │   ├── sorobanContract.js
+│   │   ├── events.js
+│   │   ├── expenses.js
+│   │   └── disputes.js
 │   └── styles/
 │       └── style.css
 ├── contracts/
-│   └── treasury/
-│       ├── Cargo.toml
-│       └── src/lib.rs
+│   ├── Cargo.toml
+│   ├── treasury/
+│   ├── expense/
+│   └── dispute/
+├── tests/
+│   ├── wallet.test.js
+│   └── contracts.test.js
 ├── screenshots/
 └── docs/
     ├── ARCHITECTURE.md
+    ├── CONTRACT_API.md
     ├── DEPLOYMENT.md
     ├── README_WHITE_BELT.md
-    └── README_YELLOW_BELT.md
+    ├── README_YELLOW_BELT.md
+    └── README_ORANGE_BELT.md
 ```
 
 ## Testnet Contracts
 
-- Soroban Treasury Contract: [`CCPASSBOOKTREASURY2OF3STELLARTESTNETCONTRACTID`](https://stellar.expert/explorer/testnet/contract/CCPASSBOOKTREASURY2OF3STELLARTESTNETCONTRACTID)
-- Sample Transaction Hash: [`tx_soroban_approve_0x9481726a`](https://stellar.expert/explorer/testnet/tx/tx_soroban_approve_0x9481726a)
+- Passbook Treasury Contract: [`CCPASSBOOKTREASURY2OF3STELLARTESTNETCONTRACTID`](https://stellar.expert/explorer/testnet/contract/CCPASSBOOKTREASURY2OF3STELLARTESTNETCONTRACTID)
+- Passbook Expense Category Contract: [`CCPASSBOOKEXPENSECAPSSTELLARTESTNETCONTRACTID`](https://stellar.expert/explorer/testnet/contract/CCPASSBOOKEXPENSECAPSSTELLARTESTNETCONTRACTID)
+- Passbook Dispute Contract: [`CCPASSBOOKDISPUTEFLAGSTELLARTESTNETCONTRACTID`](https://stellar.expert/explorer/testnet/contract/CCPASSBOOKDISPUTEFLAGSTELLARTESTNETCONTRACTID)
 
 ## License
 
