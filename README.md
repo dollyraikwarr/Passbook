@@ -1,7 +1,7 @@
 # Passbook - Vite Stellar Testnet dApp (Level 3 Orange Belt)
 
 [![CI Pipeline](https://github.com/dollyraikwarr/Passbook/actions/workflows/test-deploy.yml/badge.svg)](https://github.com/dollyraikwarr/Passbook/actions/workflows/test-deploy.yml)
-[![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-blue)](https://passbook-treasury.vercel.app)
+[![Vercel Deployment](https://img.shields.io/badge/deployment-vercel-blue)](https://passbook-ten.vercel.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 Passbook is a single root-based Vite frontend application for Stellar Testnet multi-sig club treasuries, Soroban inter-contract spending caps & member dispute flagging, real-time event streaming, and CI/CD automation.
@@ -22,7 +22,7 @@ Following the structure of our approved Level 3 projects on RiseIn (e.g. CareCre
 ## Live Links & Demo Video
 
 - GitHub Repository: [https://github.com/dollyraikwarr/Passbook](https://github.com/dollyraikwarr/Passbook)
-- Live Production dApp: [https://passbook-treasury.vercel.app](https://passbook-treasury.vercel.app)
+- Live Production dApp: [https://passbook-ten.vercel.app/](https://passbook-ten.vercel.app/)
 - Demo Video Walkthrough: [Passbook Level 3 Video](https://youtu.be/UgHnk698BJw?si=XiN6-4QFzVk9UR-i)
 
 ## Run Locally
