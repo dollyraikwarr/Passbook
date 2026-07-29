@@ -22,7 +22,6 @@ button, input, select{font-family:var(--font-body);}
 .nav-inner{max-width:var(--max); margin:0 auto; padding:13px 16px; display:flex; align-items:center; justify-content:space-between;}
 .brand{font-family:var(--font-display); font-weight:900; font-size:18px; color:var(--ink); text-decoration:none;}
 .brand-mark{color:var(--green);}
-.avatar{width:32px; height:32px; border-radius:50%; background:var(--ink); color:var(--paper); display:flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:12px; font-weight:600;}
 
 .btn{
   display:inline-flex; align-items:center; gap:6px; font-weight:600; font-size:14px; padding:11px 18px;
@@ -45,12 +44,21 @@ button, input, select{font-family:var(--font-body);}
 .state-card--pending{background:var(--green-soft); border:1px solid var(--green); color:var(--ink);}
 .state-card--red{background:var(--red-soft); border:1px solid var(--red); color:var(--ink);}
 
-.spinner{width:15px; height:15px; border-radius:50%; border:2px solid var(--green-soft); border-top-color:var(--green); animation:spin .8s linear infinite; flex-shrink:0; margin-top:2px;}
-@keyframes spin{to{transform:rotate(360deg);}}
-
-footer{padding:36px 16px 60px; text-align:center; font-size:12px; color:var(--ink-faint); font-family:var(--font-mono);}
+.skeleton{
+  background:linear-gradient(90deg, var(--paper-deep) 25%, var(--paper-raised) 50%, var(--paper-deep) 75%);
+  background-size:200% 100%; animation:pulse-bg 1.5s infinite ease-in-out; border-radius:6px;
+}
+@keyframes pulse-bg{0%{background-position:200% 0;} 100%{background-position:-200% 0;}}
 
 .toast-container{
   position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:1000;
   pointer-events:none; display:flex; flex-direction:column; gap:8px; align-items:center; max-width:90vw; width:440px;
+}
+
+/* Mobile Responsive Breakpoints */
+@media (max-width: 640px) {
+  .wrap { padding:0 12px; }
+  .nav-inner { padding:10px 12px; }
+  .btn { width:100%; justify-content:center; }
+  .grid-form { grid-template-columns: 1fr !important; }
 }
