@@ -10,6 +10,8 @@ jobs:
   contract-tests:
     name: Soroban Smart Contract Tests
     runs-on: ubuntu-latest
+    env:
+      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
     steps:
       - uses: actions/checkout@v4
 

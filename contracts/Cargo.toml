@@ -5,6 +5,3 @@ members = [
   "dispute",
 ]
 resolver = "2"
-
-[patch.crates-io]
-ethnum = { git = "https://github.com/ethnum-rs/ethnum", branch = "main" }
