@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="1200" height="675" style="background:#EFF1EC; font-family:'IBM Plex Sans', -apple-system, sans-serif;">
+    <style>
+      .bg { fill: #EFF1EC; }
+      .nav { fill: #F8F9F6; stroke: #D7DACF; stroke-width: 1.5; }
+      .brand { font-family: Georgia, serif; font-weight: 900; font-size: 22px; fill: #1C2B33; }
+      .brand-mark { fill: #2E5D4B; }
+      .card { fill: #F8F9F6; stroke: #D7DACF; stroke-width: 1.5; rx: 10px; }
+      .card-accent { stroke: #2E5D4B; stroke-width: 4; }
+      .btn { fill: #1C2B33; rx: 6px; }
+      .btn-text { fill: #EFF1EC; font-weight: 600; font-size: 14px; text-anchor: middle; }
+      .btn-outline { fill: transparent; stroke: #B9BDAF; stroke-width: 1.5; rx: 6px; }
+      .btn-outline-text { fill: #1C2B33; font-weight: 600; font-size: 14px; text-anchor: middle; }
+      .text-title { font-family: Georgia, serif; font-size: 26px; font-weight: 700; fill: #1C2B33; }
+      .text-mono { font-family: 'Courier New', monospace; font-size: 13px; fill: #556066; }
+      .chip { fill: #E3ECE6; stroke: #2E5D4B; stroke-width: 1; rx: 14px; }
+      .chip-text { fill: #2E5D4B; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; }
+      .badge-green { fill: #2E5D4B; }
+      .badge-amber { fill: #F4EAD8; stroke: #B4802A; stroke-width: 1; }
+      .badge-amber-text { fill: #B4802A; font-family: 'Courier New', monospace; font-size: 12px; font-weight: 700; }
+    </style>
+
+    <!-- Browser Frame Top Bar -->
+    <rect width="1200" height="675" class="bg" />
+    <rect x="0" y="0" width="1200" height="54" class="nav" />
+    <circle cx="30" cy="27" r="6" fill="#9C4A3B" />
+    <circle cx="50" cy="27" r="6" fill="#B4802A" />
+    <circle cx="70" cy="27" r="6" fill="#2E5D4B" />
+    <rect x="110" y="14" width="700" height="26" rx="13" fill="#E4E7DF" />
+    <text x="130" y="31" class="text-mono" font-size="12">https://passbook.app/debate-society</text>
+
+    <!-- Navbar -->
+    <rect x="0" y="54" width="1200" height="60" class="nav" />
+    <text x="40" y="91" class="brand"><tspan fill="#2E5D4B">Pass</tspan>book</text>
+    <text x="140" y="90" class="text-mono" font-size="13" fill="#8B968F">| Debate Society Treasury</text>
+
+    
+  <text x="80" y="160" class="text-title">On-Chain Ledger History</text>
+  
+  <rect x="80" y="180" width="1040" height="420" class="card" />
+  
+  <!-- Table Header -->
+  <rect x="80" y="180" width="1040" height="45" fill="#E4E7DF" />
+  <text x="110" y="208" class="text-mono" font-weight="700">DATE</text>
+  <text x="300" y="208" class="text-mono" font-weight="700">OPERATION</text>
+  <text x="600" y="208" class="text-mono" font-weight="700">STATUS</text>
+  <text x="900" y="208" class="text-mono" font-weight="700">TRANSACTION HASH</text>
+
+  <!-- Row 1 -->
+  <text x="110" y="250" class="text-mono">Jul 25, 09:30</text>
+  <text x="300" y="250" class="text-mono" font-weight="600">SetOptions (2-of-3 Multi-Sig)</text>
+  <rect x="600" y="235" width="100" height="22" class="chip" />
+  <text x="650" y="250" class="chip-text" text-anchor="middle">✓ Confirmed</text>
+  <text x="900" y="250" class="text-mono" fill="#2E5D4B" font-weight="600">0x9481…b7a9 ↗</text>
+  <line x1="100" y1="270" x2="1100" y2="270" stroke="#D7DACF" />
+
+  <!-- Row 2 -->
+  <text x="110" y="310" class="text-mono">Jul 25, 09:15</text>
+  <text x="300" y="310" class="text-mono" font-weight="600">CreateAccount (Friendbot Faucet)</text>
+  <rect x="600" y="295" width="100" height="22" class="chip" />
+  <text x="650" y="310" class="chip-text" text-anchor="middle">✓ Confirmed</text>
+  <text x="900" y="310" class="text-mono" fill="#2E5D4B" font-weight="600">0x8841…f12c ↗</text>
+
+  </svg>
