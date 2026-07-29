@@ -10,17 +10,15 @@ jobs:
   contract-tests:
     name: Soroban Smart Contract Tests
     runs-on: ubuntu-latest
-    env:
-      CARGO_NET_GIT_FETCH_WITH_CLI: "true"
     steps:
       - uses: actions/checkout@v4
 
       - name: Install Rust toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
+          toolchain: 1.77.0
           components: clippy, rustfmt
-          targets: wasm32v1-none
+          targets: wasm32-unknown-unknown
 
       - name: Run Soroban Contract Tests
         run: cargo test --workspace --manifest-path contracts/Cargo.toml
