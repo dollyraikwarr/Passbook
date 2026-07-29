@@ -52,4 +52,4 @@ Passbook Orange Belt converts Passbook into a production-ready dApp with multi-c
 ## 🌐 Live Production Links
 
 - **Live Production App:** [https://passbook-ten.vercel.app/](https://passbook-ten.vercel.app/)
-- **Demo Video:** [Passbook Level 3 Walkthrough Video](https://youtu.be/UgHnk698BJw?si=XiN6-4QFzVk9UR-i)
+- **Demo Video:** [Passbook Level 3 Walkthrough Video](YOUR_PASSBOOK_DEMO_VIDEO_URL_HERE)

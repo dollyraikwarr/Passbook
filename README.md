@@ -23,7 +23,7 @@ Following the structure of our approved Level 3 projects on RiseIn (e.g. CareCre
 
 - GitHub Repository: [https://github.com/dollyraikwarr/Passbook](https://github.com/dollyraikwarr/Passbook)
 - Live Production dApp: [https://passbook-ten.vercel.app/](https://passbook-ten.vercel.app/)
-- Demo Video Walkthrough: [Passbook Level 3 Video](https://youtu.be/UgHnk698BJw?si=XiN6-4QFzVk9UR-i)
+- Demo Video Walkthrough: [Passbook Level 3 Demo Video](YOUR_PASSBOOK_DEMO_VIDEO_URL_HERE)
 
 ## Run Locally
 
