@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Set up your treasury — Passbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700;8..60,900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#EFF1EC; --paper-raised:#F8F9F6; --paper-deep:#E4E7DF;
+    --ink:#1C2B33; --ink-soft:#556066; --ink-faint:#8B968F;
+    --green:#2E5D4B; --green-soft:#E3ECE6;
+    --amber:#B4802A; --amber-soft:#F4EAD8;
+    --red:#9C4A3B; --red-soft:#F2E2DD;
+    --hairline:#D7DACF; --hairline-strong:#B9BDAF;
+    --font-display:'Source Serif 4', Georgia, serif;
+    --font-body:'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono:'IBM Plex Mono', 'Courier New', monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--font-body); font-size:16px; line-height:1.5;}
+  h1,h2{font-family:var(--font-display); margin:0; font-weight:700;}
+  p{margin:0;}
+  button, input{font-family:var(--font-body);}
+  :focus-visible{outline:2px solid var(--green); outline-offset:2px; border-radius:2px;}
+
+  .top{display:flex; align-items:center; justify-content:space-between; max-width:480px; margin:0 auto; padding:20px 20px 0;}
+  .brand{font-family:var(--font-display); font-weight:900; font-size:16px; color:var(--ink-soft); text-decoration:none;}
+  .brand-mark{color:var(--green);}
+  .back-link{font-size:13px; color:var(--ink-faint); text-decoration:none; font-family:var(--font-mono); visibility:hidden; cursor:pointer;}
+  .back-link.show{visibility:visible;}
+
+  .shell{max-width:480px; margin:0 auto; padding:28px 20px 60px; min-height:70vh;}
+
+  .progress-wrap{margin-bottom:26px; display:none;}
+  .progress-wrap.show{display:block;}
+  .progress-track{display:flex; gap:6px; margin-bottom:8px;}
+  .progress-step{flex:1; height:4px; border-radius:2px; background:var(--hairline-strong); transition:background 0.3s ease;}
+  .progress-step.done{background:var(--green);}
+  .progress-step.current{background:var(--ink);}
+  .progress-label{font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+
+  .step{display:none; flex-direction:column; gap:16px; opacity:0; transform:translateY(8px); transition:opacity 0.25s ease, transform 0.25s ease;}
+  .step.active{display:flex; opacity:1; transform:translateY(0);}
+
+  .eyebrow{font-family:var(--font-mono); font-size:12px; color:var(--green); text-transform:uppercase; letter-spacing:.08em;}
+  h1{font-size:26px; line-height:1.15; overflow-wrap:break-word;}
+  .lead{color:var(--ink-soft); font-size:15px; max-width:44ch;}
+  .card{background:var(--paper-raised); border:1px solid var(--hairline); border-radius:10px; padding:20px;}
+  .card-note{background:var(--paper-raised); border:1px solid var(--hairline); border-left:4px solid var(--green); border-radius:8px; padding:14px 16px; font-size:13.5px; color:var(--ink-soft);}
+
+  .btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    font-weight:600; font-size:15px; padding:13px 20px; border-radius:7px;
+    border:1.5px solid transparent; background:var(--ink); color:var(--paper); cursor:pointer; width:100%;
+    transition:background .15s ease, border-color .15s ease; text-decoration:none;
+    min-height:44px;
+  }
+  .btn:hover{background:var(--green);}
+  .btn:disabled, .btn[aria-disabled="true"]{background:var(--hairline-strong); color:var(--paper); cursor:not-allowed;}
+  .btn-outline{background:transparent; color:var(--ink); border-color:var(--hairline-strong);}
+  .btn-outline:hover{border-color:var(--ink); background:transparent;}
+  .btn-text{background:none; border:none; color:var(--ink-soft); font-size:13.5px; text-decoration:underline; padding:6px; width:auto; cursor:pointer;}
+
+  /* wallet connect */
+  .wallet-box{display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; padding:8px 0 4px;}
+  .wallet-icon{
+    width:52px; height:52px; border-radius:12px; background:var(--paper-deep); border:1px solid var(--hairline-strong);
+    display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:900; font-size:20px; color:var(--ink);
+  }
+  .install-link{font-size:13px; color:var(--ink-faint);}
+  .install-link a{color:var(--green); font-weight:600; text-decoration:none; border-bottom:1px solid var(--green);}
+
+  .spinner{width:15px; height:15px; border-radius:50%; border:2px solid var(--green-soft); border-top-color:var(--green); animation:spin .8s linear infinite; flex-shrink:0;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .connected-row{display:flex; align-items:center; gap:8px; justify-content:center; font-size:14px; font-weight:600; color:var(--green); word-break:break-all;}
+
+  /* form fields */
+  .field{display:flex; flex-direction:column; gap:6px;}
+  .field label{font-size:12.5px; font-weight:600; color:var(--ink-soft);}
+  .field input{
+    font-family:var(--font-body); font-size:15px; padding:11px 13px; border:1.5px solid var(--hairline-strong);
+    border-radius:6px; background:var(--paper); color:var(--ink); width:100%; min-height:44px;
+  }
+  .field input:focus{border-color:var(--green);}
+  .field-hint{font-size:12px; color:var(--ink-faint); line-height:1.4;}
+  .signer-block{display:flex; flex-direction:column; gap:10px; padding:14px 0; border-top:1px solid var(--hairline);}
+
+  /* threshold diagram */
+  .threshold-diagram{display:flex; align-items:center; justify-content:center; gap:16px; padding:18px 0 6px;}
+  .sig-circle{
+    width:44px; height:44px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-mono); font-size:13px; font-weight:600; border:2px dashed var(--hairline-strong); color:var(--ink-faint);
+    transition:all .3s ease;
+  }
+  .sig-circle.filled{background:var(--green); border-style:solid; border-color:var(--green); color:#fff;}
+  .threshold-caption{text-align:center; font-family:var(--font-mono); font-size:12px; color:var(--ink-soft);}
+
+  .state-card{display:flex; align-items:flex-start; gap:10px; border-radius:8px; padding:13px 15px; font-size:13.5px;}
+  .state-card--pending{background:var(--green-soft); border:1px solid var(--green); color:var(--ink);}
+
+  .account-address{
+    font-family:var(--font-mono); font-size:13px; background:var(--paper-deep); border:1px solid var(--hairline);
+    border-radius:6px; padding:10px 12px; text-align:center; letter-spacing:.02em; word-break:break-all;
+  }
+  .invite-card{
+    background:var(--paper-raised); border:1px solid var(--hairline); border-radius:8px; padding:16px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .invite-header{display:flex; align-items:center; gap:10px;}
+  .invite-name{font-weight:600; font-size:15px; display:flex; align-items:center; gap:8px;}
+  .invite-avatar{width:28px; height:28px; border-radius:50%; background:var(--ink); color:var(--paper); font-family:var(--font-mono); font-size:11px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .invite-msg{font-size:13px; color:var(--ink-soft); background:var(--paper); border:1px dashed var(--hairline-strong); border-radius:6px; padding:12px; line-height:1.5;}
+  .invite-btn-row{display:flex; gap:10px; flex-wrap:wrap;}
+  .invite-action-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:6px;
+    font-size:13px; font-weight:600; color:var(--ink); background:transparent; border:1.5px solid var(--hairline-strong);
+    border-radius:6px; padding:8px 14px; cursor:pointer; transition:all .15s ease; flex:1; min-height:40px;
+  }
+  .invite-action-btn:hover{border-color:var(--ink); background:var(--paper);}
+  .invite-action-btn.copied{background:var(--green); color:#fff; border-color:var(--green);}
+
+  .success-icon{
+    width:56px; height:56px; border-radius:50%; background:var(--green); color:#fff;
+    display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto;
+  }
+  .signer-chips{display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+  .signer-chip{display:flex; align-items:center; gap:6px; background:var(--paper-raised); border:1px solid var(--hairline); border-radius:20px; padding:5px 12px 5px 5px; font-size:13px;}
+  .chip-avatar{width:22px; height:22px; border-radius:50%; background:var(--green); color:#fff; font-family:var(--font-mono); font-size:9.5px; font-weight:600; display:flex; align-items:center; justify-content:center;}
+  .success-balance{text-align:center; font-family:var(--font-mono); font-size:28px; font-weight:600; margin-top:4px;}
+  .success-balance-label{text-align:center; font-family:var(--font-mono); font-size:11.5px; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.05em;}
+
+  .toast-container{
+    position:fixed; bottom:24px; left:50%; transform:translateX(-50%); z-index:100;
+    pointer-events:none; display:flex; flex-direction:column; gap:8px; align-items:center;
+  }
+  .toast{
+    background:var(--ink); color:var(--paper); padding:10px 18px; border-radius:20px;
+    font-size:13px; font-weight:600; font-family:var(--font-body); box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    display:flex; align-items:center; gap:8px; opacity:0; transform:translateY(10px); transition:all 0.2s ease;
+  }
+  .toast.show{opacity:1; transform:translateY(0);}
+  .toast-icon{color:var(--green-soft); font-weight:700;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; animation:none !important;}
+    .spinner{border-top-color:var(--green);}
+    .step{opacity:1 !important; transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <a href="index.html" class="brand"><span class="brand-mark">Pass</span>book</a>
+  <a href="#" class="back-link" id="backLink">← Back</a>
+</div>
+
+<main class="shell">
+
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-track" id="progressTrack">
+      <div class="progress-step" data-i="1"></div>
+      <div class="progress-step" data-i="2"></div>
+      <div class="progress-step" data-i="3"></div>
+      <div class="progress-step" data-i="4"></div>
+    </div>
+    <span class="progress-label" id="progressLabel">Step 1 of 4</span>
+  </div>
+
+  <!-- WELCOME -->
+  <section class="step active" data-step="welcome">
+    <span class="eyebrow">Getting started</span>
+    <h1>Let's set up your club's treasury</h1>
+    <p class="lead">In the next few steps, Debate Society will have a shared account that no single person can spend from alone.</p>
+    <div class="card-note">You'll connect your Freighter wallet, fund your testnet account, configure a 2-of-3 multi-sig requirement, and invite your co-treasurers.</div>
+    <button class="btn" type="button" onclick="goTo('wallet')">Connect wallet</button>
+  </section>
+
+  <!-- STEP 1: WALLET -->
+  <section class="step" data-step="wallet">
+    <h1>Connect your wallet</h1>
+    <p class="lead">Freighter is a free browser tool for approving spending — not a place to trade or invest in anything. Think of it as your signature.</p>
+    <div class="card">
+      <div class="wallet-box">
+        <div class="wallet-icon">F</div>
+        <button class="btn btn-connect-wallet" id="connectBtn" type="button">Connect with Freighter</button>
+        <div id="walletStatus"></div>
+        <p class="install-link">Don't have Freighter? <a href="https://www.freighter.app/" target="_blank" rel="noopener">Install it — it's free →</a></p>
+      </div>
+    </div>
+    <button class="btn" id="walletContinueBtn" type="button" disabled aria-disabled="true" onclick="goTo('multisig')">Continue</button>
+  </section>
+
+  <!-- STEP 2: MULTISIG SETUP -->
+  <section class="step" data-step="multisig">
+    <h1>Who approves with you?</h1>
+    <p class="lead">Your club needs 2 of 3 e-board members to approve every expense. Enter co-signer names or testnet addresses.</p>
+
+    <div class="threshold-diagram">
+      <div class="sig-circle filled" id="circle1">RS</div>
+      <div class="sig-circle" id="circle2">M</div>
+      <div class="sig-circle" id="circle3">A</div>
+    </div>
+    <p class="threshold-caption">2 of 3 must approve every expense</p>
+
+    <div class="card" style="display:flex; flex-direction:column; gap:0;">
+      <div class="signer-block" style="border-top:none; padding-top:0;">
+        <div class="field">
+          <label for="signer1Input">Co-signer 1 — name or public key</label>
+          <input type="text" id="signer1Input" placeholder="e.g. Meera (or GDKX…)" oninput="updateCircle(2, this.value)">
+        </div>
+        <p class="field-hint">You can enter their name or their Stellar Testnet Public Key.</p>
+      </div>
+      <div class="signer-block">
+        <div class="field">
+          <label for="signer2Input">Co-signer 2 — name or public key</label>
+          <input type="text" id="signer2Input" placeholder="e.g. Arjun (or GA3D…)" oninput="updateCircle(3, this.value)">
+        </div>
+      </div>
+    </div>
+
+    <button class="btn" id="submitMultisigBtn" type="button" onclick="submitOnboardingMultisig()">Create 2-of-3 Account</button>
+  </section>
+
+  <!-- STEP 3: INVITE -->
+  <section class="step" data-step="invite">
+    <h1>Send invites to your co-signers</h1>
+    <p class="lead">Your shared account is live on Stellar Testnet. Send these invites to Meera and Arjun so they can connect their wallets.</p>
+
+    <div class="field">
+      <label>Your Stellar Treasury Address</label>
+      <div class="account-address connected-address-display" id="treasuryAddrDisplay">GA3D…K9F2</div>
+    </div>
+
+    <div class="invite-card">
+      <div class="invite-header">
+        <span class="invite-avatar" id="inviteAvatar1">M</span>
+        <span class="invite-name" id="inviteName1">Meera</span>
+      </div>
+      <p class="invite-msg" id="inviteMsg1">Hey Meera, Priya set up a shared treasury for Debate Society. You need to approve spending as one of three co-treasurers. Click here to connect your wallet: passbook.app/join/debate-society</p>
+      <div class="invite-btn-row">
+        <button class="invite-action-btn" type="button" onclick="copyText('inviteMsg1', 'Copied invite text!')">📋 Copy invite text</button>
+        <button class="invite-action-btn" type="button" onclick="copyLink('passbook.app/join/debate-society', 'Copied invite link!')">🔗 Copy invite link</button>
+      </div>
+    </div>
+
+    <div class="invite-card">
+      <div class="invite-header">
+        <span class="invite-avatar" id="inviteAvatar2">A</span>
+        <span class="invite-name" id="inviteName2">Arjun</span>
+      </div>
+      <p class="invite-msg" id="inviteMsg2">Hey Arjun, Priya set up a shared treasury for Debate Society. You need to approve spending as one of three co-treasurers. Click here to connect your wallet: passbook.app/join/debate-society</p>
+      <div class="invite-btn-row">
+        <button class="invite-action-btn" type="button" onclick="copyText('inviteMsg2', 'Copied invite text!')">📋 Copy invite text</button>
+        <button class="invite-action-btn" type="button" onclick="copyLink('passbook.app/join/debate-society', 'Copied invite link!')">🔗 Copy invite link</button>
+      </div>
+    </div>
+
+    <button class="btn" type="button" onclick="goTo('success')">Send invites</button>
+    <button class="btn btn-text" type="button" onclick="goTo('success')">Done, I'll handle this separately</button>
+  </section>
+
+  <!-- SUCCESS -->
+  <section class="step" data-step="success">
+    <div class="success-icon">✓</div>
+    <h1 style="text-align:center;">All set! Your treasury is live.</h1>
+    <p class="lead" style="text-align:center; margin:0 auto;">Debate Society now has a 2-of-3 multi-sig account live on Stellar Testnet.</p>
+
+    <div class="signer-chips">
+      <span class="signer-chip"><span class="chip-avatar">RS</span>You</span>
+      <span class="signer-chip" id="chipSigner1"><span class="chip-avatar">MK</span><span id="chipName1">Meera</span> — invited</span>
+      <span class="signer-chip" id="chipSigner2"><span class="chip-avatar">AT</span><span id="chipName2">Arjun</span> — invited</span>
+    </div>
+
+    <div>
+      <p class="success-balance-label">Current balance</p>
+      <p class="success-balance balance-amount">$0.00 XLM</p>
+    </div>
+
+    <a class="btn" href="dashboard-empty.html">Go to your dashboard</a>
+  </section>
+
+</main>
+
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+<script type="module">
+  import { state, handleConnectWallet, handleCreateMultiSig, showAppToast, updateUIWithWallet } from './js/app.js';
+
+  var stepNumbers = {wallet:1, multisig:2, invite:3, success:4};
+  var current = 'welcome';
+
+  window.goTo = function(step){
+    document.querySelectorAll('.step').forEach(function(s){ s.classList.remove('active'); });
+    var target = document.querySelector('.step[data-step="'+step+'"]');
+    if(target) target.classList.add('active');
+    current = step;
+
+    var backLink = document.getElementById('backLink');
+    backLink.classList.toggle('show', step !== 'welcome' && step !== 'success');
+
+    var progressWrap = document.getElementById('progressWrap');
+    if(stepNumbers[step]){
+      progressWrap.classList.add('show');
+      var n = stepNumbers[step];
+      document.getElementById('progressLabel').textContent = 'Step ' + n + ' of 4';
+      document.querySelectorAll('.progress-step').forEach(function(seg){
+        var i = parseInt(seg.getAttribute('data-i'));
+        seg.classList.remove('done','current');
+        if(i < n) seg.classList.add('done');
+        if(i === n) seg.classList.add('current');
+      });
+    } else {
+      progressWrap.classList.remove('show');
+    }
+    window.scrollTo(0,0);
+  };
+
+  document.getElementById('backLink')?.addEventListener('click', function(e){
+    e.preventDefault();
+    var order = ['welcome','wallet','multisig','invite','success'];
+    var idx = order.indexOf(current);
+    if(idx > 0) window.goTo(order[idx-1]);
+  });
+
+  window.updateCircle = function(n, value){
+    var circle = document.getElementById('circle' + n);
+    var fallback = n === 2 ? 'M' : 'A';
+    if(value.trim().length > 0){
+      circle.classList.add('filled');
+      circle.textContent = value.trim().slice(0,2).toUpperCase();
+    } else {
+      circle.classList.remove('filled');
+      circle.textContent = fallback;
+    }
+  };
+
+  document.getElementById('connectBtn')?.addEventListener('click', async function(){
+    const res = await handleConnectWallet();
+    if(res && res.success){
+      document.getElementById('walletContinueBtn').disabled = false;
+      document.getElementById('walletContinueBtn').removeAttribute('aria-disabled');
+    }
+  });
+
+  window.submitOnboardingMultisig = async function(){
+    const s1 = document.getElementById('signer1Input').value.trim();
+    const s2 = document.getElementById('signer2Input').value.trim();
+
+    const btn = document.getElementById('submitMultisigBtn');
+    btn.disabled = true;
+    btn.textContent = 'Submitting to Stellar Testnet…';
+
+    const res = await handleCreateMultiSig({ signer1: s1, signer2: s2 });
+
+    if(res.success){
+      window.goTo('invite');
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Create 2-of-3 Account';
+    }
+  };
+
+  window.copyText = function(id, toastMsg){
+    var text = document.getElementById(id).textContent;
+    navigator.clipboard.writeText(text).catch(function(){});
+    showAppToast(toastMsg);
+  };
+
+  window.copyLink = function(url, toastMsg){
+    navigator.clipboard.writeText(url).catch(function(){});
+    showAppToast(toastMsg);
+  };
+</script>
+
+</body>
+</html>
