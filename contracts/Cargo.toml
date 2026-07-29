@@ -1,0 +1,7 @@
+[workspace]
+members = [
+  "treasury",
+  "expense",
+  "dispute",
+]
+resolver = "2"
