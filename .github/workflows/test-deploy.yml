@@ -18,16 +18,7 @@ jobs:
         with:
           toolchain: stable
           components: clippy, rustfmt
-          targets: wasm32-unknown-unknown
-
-      - name: Cache cargo dependencies
-        uses: swatinem/rust-cache@v2
-        with:
-          workspaces: contracts -> contracts/target
-
-      - name: Check Formatting
-        run: cargo fmt --all --manifest-path contracts/Cargo.toml -- --check
-        continue-on-error: true
+          targets: wasm32v1-none
 
       - name: Run Soroban Contract Tests
         run: cargo test --workspace --manifest-path contracts/Cargo.toml
